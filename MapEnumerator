@@ -1,0 +1,35 @@
+static void DC_MapEnumerator(Args _args)
+{
+    Map mapKeyValue;
+    MapEnumerator enumer;
+    //MapIterator mapIter;  // for delete
+    str iCurrentKey,sCurrentValue;
+    str previousCompany;
+    int i =0;
+    int cnt =0;
+
+
+    mapKeyValue = new Map(Types::String,Types::String);
+    cnt = mapKeyValue.elements();
+    info(strfmt("Count: %1", cnt));
+
+    //mapKeyValue.insert(xx ,int2str(xx)+ "_Value");
+    mapKeyValue.insert('1427-00032-01' ,'1427');
+    mapKeyValue.insert('1427-00032-02' ,'1427');
+    mapKeyValue.insert('1427-00032-03' ,'1427');
+    mapKeyValue.insert('1427-00032-03' ,'1427');
+    mapKeyValue.insert('1427-00032-03' ,'1427');
+
+    enumer = mapKeyValue.getEnumerator();
+    cnt = mapKeyValue.elements();
+    info(strfmt("Count: %1", cnt));
+
+    while (enumer.moveNext())
+    {
+        i++;
+        iCurrentKey = enumer.currentKey();
+        sCurrentValue = enumer.currentValue();
+        // Display key and value here.
+        info(strfmt("%3: Key: %1  Value: %2", iCurrentKey, sCurrentValue, i));
+    }
+}
