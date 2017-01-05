@@ -1,4 +1,4 @@
-static void DC_CleanUpAddVendorForEmployeeJob(Args _args)
+static void DC_AddVendorForEmployeeJob(Args _args)
 {
     // Job needs to be run on company 1001 only
 
@@ -55,7 +55,7 @@ static void DC_CleanUpAddVendorForEmployeeJob(Args _args)
                 info(strFmt("%3: WorkerRecId: %1,  Personnel: %2", HcmWorker.RecId, HcmWorker.PersonnelNumber, i));
                 if(DirPartyTable)
                 {
-                    //import.createVendorLinkForWorker(DirPartyTable.RecId, HCMWorker);
+                    //import.createVendorForWorker(DirPartyTable.RecId, HCMWorker);
                 }
             }
             catch (Exception::Error)
