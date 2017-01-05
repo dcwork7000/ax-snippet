@@ -1,0 +1,77 @@
+static void DC_CleanUpAddVendorForEmployeeJob(Args _args)
+{
+    // Job needs to be run on company 1001 only
+
+    HcmWorker   HcmWorker;
+    TrvPartyEmployeeRelationship    TrvPartyEmployeeRelationship;
+    TRI_ThirdPartyPayrollInfo       TRI_ThirdPartyPayrollInfo;
+    VendTable   VendTable;
+
+    DirPartyTable   DirPartyTable;
+    int i = 0;
+
+    VendAccount    vendorNum;
+    
+    
+    TRI_EmployeeMasterImport import = new TRI_EmployeeMasterImport();
+    
+    // Number sequence
+    //vendorNum  =   NumberSeq::newGetNum(VendParameters::numRefVendAccount()).num();
+    //info(strFmt("VendorNum: %1 ", vendorNum));
+
+    //TrvPartyEmployeeRelationship = TrvPartyEmployeeRelationship::find(5637146076); //  HcmWorker.RecId
+    //if(TrvPartyEmployeeRelationship)
+    //{
+        //info(strFmt("RecId RecId: %1,  Worker: %2", TrvPartyEmployeeRelationship.RecId, TrvPartyEmployeeRelationship.Worker));
+    //}
+    
+    
+    //VendTable = VendTable::findByLedgerDimension(TrvPartyEmployeeRelationship::find(5637152219).LedgerDimension);
+    //VendTable = VendTable::findByLedgerDimension(5637179195); // VendTable.RecId
+    //if(VendTable)
+    //{
+        //info(strFmt("VendTable RecId: %1,  Acct: %2", VendTable.RecId, VendTable.AccountNum));
+    //}
+
+    //while select * from HcmWorker
+    //notexists join TrvPartyEmployeeRelationship
+        //where HcmWorker.RecId == TrvPartyEmployeeRelationship.Worker
+    ttsBegin;
+
+    while select * from HcmWorker
+        join TRI_ThirdPartyPayrollInfo
+        where HcmWorker.RecId == TRI_ThirdPartyPayrollInfo.HcmWorker
+        && TRI_ThirdPartyPayrollInfo.Status != TRI_Status::Terminated
+  && HcmWorker.RecId == 5637152216
+ // && (HcmWorker.RecId == 5637152213 || HcmWorker.RecId == 5637152214)
+        notexists join TrvPartyEmployeeRelationship
+            where HcmWorker.RecId == TrvPartyEmployeeRelationship.Worker
+        {
+            i++;
+            try
+            {
+                DirPartyTable = DirPartyTable::findByNum(hcmWorker.DirPerson().PartyNumber);
+
+                info(strFmt("%3: WorkerRecId: %1,  Personnel: %2", HcmWorker.RecId, HcmWorker.PersonnelNumber, i));
+                if(DirPartyTable)
+                {
+                    //import.createVendorLinkForWorker(DirPartyTable.RecId, HCMWorker);
+                }
+            }
+            catch (Exception::Error)
+            {
+                info("Error Processing Employee/Vendor clean up");
+            }
+        }
+
+
+
+    ttsCommit;    
+    info(strFmt("Total records processed: %1", i));
+    
+    //select count(RecId) from HcmWorker;
+    //info(strFmt("Number of records %1." ,HcmWorker.RecId));
+    
+    info("Done");
+
+}
